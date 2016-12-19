@@ -99,10 +99,17 @@ resource "google_compute_address" "kubernetes" {
   name = "kubernetes"
 }
 
+variable "controller_ips" {
+  default = {
+    "0" = "10.240.0.10"
+    "1" = "10.240.0.11"
+    "2" = "10.240.0.12"
+    }
+}
 
-
-resource "google_compute_instance" "controller0" {
-  name = "controller0"
+resource "google_compute_instance" "controller" {
+  count = 3
+  name = "controller${count.index}"
   machine_type = "n1-standard-1"
   zone = "us-central1-a"
 
@@ -113,7 +120,7 @@ resource "google_compute_instance" "controller0" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.10"
+    address = "${lookup(var.controller_ips, count.index)}"
     access_config {
     }
   }
@@ -121,28 +128,17 @@ resource "google_compute_instance" "controller0" {
   can_ip_forward = true
 }
 
-resource "google_compute_instance" "controller1" {
-  name = "controller1"
-  machine_type = "n1-standard-1"
-  zone = "us-central1-a"
-
-  disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20160921"
-    size = "200"
-  }
-
-  network_interface {
-    subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.11"
-    access_config {
+variable "worker_ips" {
+  default = {
+    "0" = "10.240.0.20"
+    "1" = "10.240.0.21"
+    "2" = "10.240.0.22"
     }
-  }
-
-  can_ip_forward = true
 }
 
-resource "google_compute_instance" "controller2" {
-  name = "controller2"
+resource "google_compute_instance" "worker" {
+  count = 3
+  name = "worker${count.index}"
   machine_type = "n1-standard-1"
   zone = "us-central1-a"
 
@@ -153,67 +149,7 @@ resource "google_compute_instance" "controller2" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.12"
-    access_config {
-    }
-  }
-
-  can_ip_forward = true
-}
-
-resource "google_compute_instance" "worker0" {
-  name = "worker0"
-  machine_type = "n1-standard-1"
-  zone = "us-central1-a"
-
-  disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20160921"
-    size = "200"
-  }
-
-  network_interface {
-    subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.20"
-    access_config {
-    }
-  }
-
-  can_ip_forward = true
-}
-
-resource "google_compute_instance" "worker1" {
-  name = "worker1"
-  machine_type = "n1-standard-1"
-  zone = "us-central1-a"
-
-  disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20160921"
-    size = "200"
-  }
-
-  network_interface {
-    subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.21"
-    access_config {
-    }
-  }
-
-  can_ip_forward = true
-}
-
-resource "google_compute_instance" "worker2" {
-  name = "worker2"
-  machine_type = "n1-standard-1"
-  zone = "us-central1-a"
-
-  disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20160921"
-    size = "200"
-  }
-
-  network_interface {
-    subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "10.240.0.22"
+    address = "${lookup(var.worker_ips, count.index)}"
     access_config {
     }
   }
