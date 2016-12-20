@@ -181,3 +181,13 @@ resource "null_resource" "certificates" {
     command = "cd cert-authority; cfssl gencert -initca ca-csr.json | cfssljson -bare ca; cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes"
   }
 }
+
+resource "null_resource" "ansible-provision" {
+  provisioner "local-exec" {
+    command = "echo '[kube-controllers]\n' > hosts/inventory"
+  }
+
+  provisioner "local-exec" {
+    command = "echo \"${join("\n", formatlist("%s ansible_ssh_host=%s", google_compute_instance.controller.*.name, google_compute_instance.controller.*.network_interface.0.access_config.0.assigned_nat_ip))}\" >> hosts/inventory"
+  }
+}

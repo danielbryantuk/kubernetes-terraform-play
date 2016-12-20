@@ -1,2 +1,11 @@
 account.json
 *.tfstate*
+cert-authority/ca-key.pem
+cert-authority/ca.csr
+cert-authority/ca.pem
+cert-authority/kubernetes-csr.json
+cert-authority/kubernetes-key.pem
+cert-authority/kubernetes.csr
+cert-authority/kubernetes.pem
+*.out
+hosts/*
