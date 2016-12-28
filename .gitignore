@@ -8,4 +8,5 @@ cert-authority/kubernetes-key.pem
 cert-authority/kubernetes.csr
 cert-authority/kubernetes.pem
 *.out
-hosts/*
+ansible/inventory/*
+*.retry

@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Install Python (for Ansible)
+      raw: "apt-get -y -q install python"
+      become: true
+      retries: 3
+      delay: 20
