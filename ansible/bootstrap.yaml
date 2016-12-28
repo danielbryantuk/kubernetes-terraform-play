@@ -7,3 +7,28 @@
       become: true
       retries: 3
       delay: 20
+    - name: Ensure etcd dir is created
+      file:
+        path: /etc/etcd/
+        recurse: yes
+        state: directory
+        owner: root
+        group: root
+      become: true
+    - name: Copy TLS certificates
+      copy:
+        src: "../cert-authority/{{ item }}"
+        dest: /etc/etcd/
+        owner: root
+        group: root
+        mode: 0644
+      with_items:
+        - ca.pem
+        - kubernetes-key.pem
+        - kubernetes.pem
+      become: true
+    - name: Download etcd binaries
+      get_url:
+        url: https://github.com/coreos/etcd/releases/download/v3.0.10/etcd-v3.0.10-linux-amd64.tar.gz
+        dest: /tmp/
+        mode: 0744

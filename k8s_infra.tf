@@ -126,6 +126,17 @@ resource "google_compute_instance" "controller" {
   }
 
   can_ip_forward = true
+
+  provisioner "remote-exec" {
+       inline = [
+       "echo 'As soon as remote-exec succeeds we know that the instance is accepting ssh connections'"
+       ]
+       connection {
+        type = "ssh"
+        user = "danielbryant"
+        private_key = "${file("/Users/danielbryant/.ssh/gcloud-id-2")}"
+      }
+   }
 }
 
 variable "worker_ips" {
@@ -155,6 +166,17 @@ resource "google_compute_instance" "worker" {
   }
 
   can_ip_forward = true
+
+  provisioner "remote-exec" {
+       inline = [
+       "echo 'As soon as remote-exec succeeds we know that the instance is accepting ssh connections'"
+       ]
+       connection {
+        type = "ssh"
+        user = "danielbryant"
+        private_key = "${file("/Users/danielbryant/.ssh/gcloud-id-2")}"
+      }
+   }
 }
 
 data "template_file" "certificates" {
@@ -183,6 +205,7 @@ resource "null_resource" "certificates" {
 }
 
 resource "null_resource" "ansible-provision" {
+  depends_on = ["null_resource.certificates"]
   provisioner "local-exec" {
     command = "echo '[kube-controllers]\n' > ansible/inventory/hosts"
   }
