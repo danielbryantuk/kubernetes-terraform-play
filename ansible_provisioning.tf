@@ -17,6 +17,6 @@ resource "null_resource" "ansible-provision" {
   }
 
   provisioner "local-exec" {
-    command = "cd ansible; ansible-playbook -i inventory/hosts -u danielbryant --private-key /Users/danielbryant/.ssh/gcloud-id-2 bootstrap.yaml"
+    command = "cd ansible; ansible-playbook -i inventory/hosts -u ${var.instance_ssh_username} --private-key ${var.instance_private_key} bootstrap.yaml"
   }
 }
