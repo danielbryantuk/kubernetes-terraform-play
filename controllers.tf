@@ -1,20 +1,12 @@
-variable "controller_ips" {
-  default = {
-    "0" = "10.240.0.10"
-    "1" = "10.240.0.11"
-    "2" = "10.240.0.12"
-    }
-}
-
 resource "google_compute_instance" "controller" {
-  count = 3
+  count = "${length(var.controller_ips)}"
   name = "controller${count.index}"
-  machine_type = "n1-standard-1"
-  zone = "us-central1-a"
+  machine_type = "${var.machine_type}"
+  zone = "${var.zone}"
 
   disk {
-    image = "ubuntu-os-cloud/ubuntu-1604-xenial-v20160921"
-    size = "200"
+    image = "${var.disk_image}"
+    size = "${var.disk_size}"
   }
 
   network_interface {
@@ -28,12 +20,12 @@ resource "google_compute_instance" "controller" {
 
   provisioner "remote-exec" {
        inline = [
-       "echo 'As soon as remote-exec succeeds we know that the instance is accepting ssh connections'"
+       "echo 'Use remote-exec to ensure that instance is ready and accepting ssh connections'"
        ]
        connection {
         type = "ssh"
-        user = "danielbryant"
-        private_key = "${file("/Users/danielbryant/.ssh/gcloud-id-2")}"
+        user = "${var.instance_ssh_username}"
+        private_key = "${var.instance_private_key}"
       }
    }
 }

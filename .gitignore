@@ -10,3 +10,4 @@ cert-authority/kubernetes.pem
 *.out
 ansible/inventory/*
 *.retry
+terraform.tfvars
