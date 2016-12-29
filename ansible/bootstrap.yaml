@@ -1,5 +1,5 @@
 - hosts: all
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     - name: Install Python (for Ansible)
@@ -27,8 +27,33 @@
         - kubernetes-key.pem
         - kubernetes.pem
       become: true
-    - name: Download etcd binaries
-      get_url:
-        url: https://github.com/coreos/etcd/releases/download/v3.0.10/etcd-v3.0.10-linux-amd64.tar.gz
-        dest: /tmp/
-        mode: 0744
+    - name: Download and unzip etcd binaries
+      unarchive:
+        src: https://github.com/coreos/etcd/releases/download/v3.0.10/etcd-v3.0.10-linux-amd64.tar.gz
+        dest: /tmp
+        remote_src: True
+    - name: Move etcd binaries to bin
+      copy:
+        src: "{{ item }}"
+        dest: /usr/bin
+        remote_src: True
+        mode: 0755
+      with_items:
+        - /tmp/etcd-v3.0.10-linux-amd64/etcd
+        - /tmp/etcd-v3.0.10-linux-amd64/etcdctl
+      become: true
+    - name: Copy etcd systemd unit template
+      template:
+        src: templates/etcd.service.j2
+        dest: /etc/systemd/system/etcd.service
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+    - name: Enable etcd systemd unit
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        enabled: yes
+        name: etcd
+      become: True
