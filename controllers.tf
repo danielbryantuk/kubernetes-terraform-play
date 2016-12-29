@@ -25,7 +25,7 @@ resource "google_compute_instance" "controller" {
        connection {
         type = "ssh"
         user = "${var.instance_ssh_username}"
-        private_key = "${var.instance_private_key}"
+        private_key = "${file(var.instance_private_key)}"
       }
    }
 }

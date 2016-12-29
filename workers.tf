@@ -11,7 +11,7 @@ resource "google_compute_instance" "worker" {
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.kubernetes.name}"
-    address = "${lookup(var.controller_ips, count.index)}"
+    address = "${lookup(var.worker_ips, count.index)}"
     access_config {
     }
   }
@@ -25,7 +25,7 @@ resource "google_compute_instance" "worker" {
        connection {
         type = "ssh"
         user = "${var.instance_ssh_username}"
-        private_key = "${var.instance_private_key}"
+        private_key = "${file(var.instance_private_key)}"
       }
    }
 }
