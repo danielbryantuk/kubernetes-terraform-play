@@ -1,11 +1,25 @@
-variable "network_name" {
-    default = "kubernetes"
+variable "credentials_file" {
+}
+
+variable "project_name" {
 }
 
 variable "instance_ssh_username" {
 }
 
 variable "instance_private_key" {
+}
+
+variable "region" {
+  default = "us-central1"
+}
+
+variable "zone" {
+  default = "us-central1-a"
+}
+
+variable "network_name" {
+    default = "kubernetes"
 }
 
 variable "controller_ips" {
@@ -26,10 +40,6 @@ variable "worker_ips" {
 
 variable "machine_type" {
   default = "n1-standard-1"
-}
-
-variable "zone" {
-  default = "us-central1-a"
 }
 
 variable "disk_image" {
