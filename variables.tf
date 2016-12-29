@@ -1,4 +1,8 @@
-variable "instance_ssh_username" {  
+variable "network_name" {
+    default = "kubernetes"
+}
+
+variable "instance_ssh_username" {
 }
 
 variable "instance_private_key" {

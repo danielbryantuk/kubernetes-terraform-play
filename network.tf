@@ -1,16 +1,16 @@
 resource "google_compute_network" "kubernetes" {
-  name = "kubernetes"
+  name = "${var.network_name}"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "kubernetes" {
-  name = "kubernetes"
+  name = "${var.network_name}"
   ip_cidr_range = "10.240.0.0/24"
   network = "${google_compute_network.kubernetes.self_link}"
 }
 
 resource "google_compute_firewall" "kubernetes-allow-icmp" {
-  name = "kubernetes-allow-icmp"
+  name = "${var.network_name}-allow-icmp"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -21,7 +21,7 @@ resource "google_compute_firewall" "kubernetes-allow-icmp" {
 }
 
 resource "google_compute_firewall" "kubernetes-allow-internal" {
-  name = "kubernetes-allow-internal"
+  name = "${var.network_name}-allow-internal"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -42,7 +42,7 @@ resource "google_compute_firewall" "kubernetes-allow-internal" {
 }
 
 resource "google_compute_firewall" "kubernetes-allow-rdp" {
-  name = "kubernetes-allow-rdp"
+  name = "${var.network_name}-allow-rdp"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -54,7 +54,7 @@ resource "google_compute_firewall" "kubernetes-allow-rdp" {
 }
 
 resource "google_compute_firewall" "kubernetes-allow-ssh" {
-  name = "kubernetes-allow-ssh"
+  name = "${var.network_name}-allow-ssh"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -66,7 +66,7 @@ resource "google_compute_firewall" "kubernetes-allow-ssh" {
 }
 
 resource "google_compute_firewall" "kubernetes-allow-healthz" {
-  name = "kubernetes-allow-health"
+  name = "${var.network_name}-allow-health"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -78,7 +78,7 @@ resource "google_compute_firewall" "kubernetes-allow-healthz" {
 }
 
 resource "google_compute_firewall" "kubernetes-allow-api-server" {
-  name = "kubernetes-allow-api-server"
+  name = "${var.network_name}-allow-api-server"
   network = "${google_compute_network.kubernetes.name}"
 
   allow {
@@ -90,5 +90,5 @@ resource "google_compute_firewall" "kubernetes-allow-api-server" {
 }
 
 resource "google_compute_address" "kubernetes" {
-  name = "kubernetes"
+  name = "${var.network_name}"
 }
