@@ -92,3 +92,27 @@ resource "google_compute_firewall" "kubernetes-allow-api-server" {
 resource "google_compute_address" "kubernetes" {
   name = "${var.network_name}"
 }
+
+resource "google_compute_http_health_check" "kubernetes-health" {
+  name = "kubernetes-health"
+  description = "Kubernetes API Server Health Check"
+  request_path = "/healthz"
+  port = "8080"
+}
+
+resource "google_compute_target_pool" "kubernetes-pool" {
+  name = "kubernetes-pool"
+
+  instances = ["${google_compute_instance.controller.*.self_link}"]
+
+  health_checks = [
+    "${google_compute_http_health_check.kubernetes-health.name}"
+  ]
+}
+
+resource "google_compute_forwarding_rule" "kubernetes-rule" {
+  name = "kubernetes-rule"
+  target = "${google_compute_target_pool.kubernetes-pool.self_link}"
+  port_range = "6443"
+  ip_address = "${google_compute_address.kubernetes.address}"
+}
