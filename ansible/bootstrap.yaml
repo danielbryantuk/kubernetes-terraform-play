@@ -1,3 +1,5 @@
+---
+  
 - hosts: all
   gather_facts: false
 
@@ -6,6 +8,7 @@
       raw: "apt-get -y -q install python"
       become: yes
 
-- hosts: all
+- hosts: kube-controllers
   roles:
     - etcd
+    - k8s-control-plane

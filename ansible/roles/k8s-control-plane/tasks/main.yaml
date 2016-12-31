@@ -1,0 +1,104 @@
+---
+
+  - name: Ensure k8s config dir is created
+    file:
+      path: /var/lib/kubernetes/
+      recurse: yes
+      state: directory
+      owner: root
+      group: root
+    become: yes
+
+  - name: Copy TLS certificates
+    copy:
+      src: "{{ playbook_dir }}/../cert-authority/{{ item }}"
+      dest: /var/lib/kubernetes/
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+      - ca.pem
+      - kubernetes-key.pem
+      - kubernetes.pem
+    become: yes
+
+  - name: Download k8s release binaries
+    get_url:
+      url: https://storage.googleapis.com/kubernetes-release/release/v1.4.0/bin/linux/amd64/{{ item }}
+      dest: /usr/bin/
+      mode: 0755
+    with_items:
+      - kube-apiserver
+      - kube-controller-manager
+      - kube-scheduler
+      - kubectl
+    become: yes
+
+  - name: Download Kelsey's default token file
+    get_url:
+        url: https://raw.githubusercontent.com/kelseyhightower/kubernetes-the-hard-way/master/token.csv
+        dest: /var/lib/kubernetes/
+        owner: root
+        group: root
+        mode: 0644
+    become: yes
+
+  - name: Download sample authz policy
+    get_url:
+      url: https://raw.githubusercontent.com/kelseyhightower/kubernetes-the-hard-way/master/authorization-policy.jsonl
+      dest: /var/lib/kubernetes/
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Copy kube-apiserver systemd unit template
+    template:
+      src: kube-apiserver.service.j2
+      dest: /etc/systemd/system/kube-apiserver.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable kube-apiserver systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: kube-apiserver
+    become: yes
+
+  - name: Copy kube-controller-manager systemd unit template
+    template:
+      src: kube-controller-manager.service.j2
+      dest: /etc/systemd/system/kube-controller-manager.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable kube-controller-manager systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: kube-controller-manager
+    become: yes
+
+  - name: Copy kube-scheduler systemd unit template
+    template:
+      src: kube-scheduler.service.j2
+      dest: /etc/systemd/system/kube-scheduler.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable kube-scheduler systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: kube-scheduler
+    become: yes
