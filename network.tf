@@ -113,6 +113,6 @@ resource "google_compute_target_pool" "kubernetes-pool" {
 resource "google_compute_forwarding_rule" "kubernetes-rule" {
   name = "kubernetes-rule"
   target = "${google_compute_target_pool.kubernetes-pool.self_link}"
-  port_range = "6443"
+  port_range = "6443-6443"
   ip_address = "${google_compute_address.kubernetes.address}"
 }

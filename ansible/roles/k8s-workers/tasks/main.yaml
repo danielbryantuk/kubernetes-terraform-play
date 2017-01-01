@@ -1,0 +1,146 @@
+---
+
+  - name: Ensure k8s config dir is created
+    file:
+      path: /var/lib/kubernetes/
+      recurse: yes
+      state: directory
+      owner: root
+      group: root
+    become: yes
+
+  - name: Copy TLS certificates
+    copy:
+      src: "{{ playbook_dir }}/../cert-authority/{{ item }}"
+      dest: /var/lib/kubernetes/
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+      - ca.pem
+      - kubernetes-key.pem
+      - kubernetes.pem
+    become: yes
+
+  - name: Download and unzip Docker
+    unarchive:
+      src: https://get.docker.com/builds/Linux/x86_64/docker-1.12.1.tgz
+      dest: /tmp/
+      remote_src: yes
+
+  - name: Move Docker binaries to bin
+    copy:
+      src: "{{ item }}"
+      dest: /usr/bin
+      remote_src: yes
+      owner: root
+      group: root
+      mode: 0755
+    with_items:
+      - /tmp/docker/docker
+      - /tmp/docker/docker-containerd
+      - /tmp/docker/docker-containerd-ctr
+      - /tmp/docker/docker-containerd-shim
+      - /tmp/docker/dockerd
+      - /tmp/docker/docker-proxy
+      - /tmp/docker/docker-runc
+    become: yes
+
+  - name: Copy Docker systemd unit template
+    template:
+      src: docker.service.j2
+      dest: /etc/systemd/system/docker.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable Docker systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: docker
+    become: yes
+
+  - name: Ensure CNI config dir is created
+    file:
+      path: /opt/cni/
+      recurse: yes
+      state: directory
+      owner: root
+      group: root
+    become: yes
+
+  - name: Download and unzip CNI (Container Network Interface)
+    unarchive:
+      src: https://storage.googleapis.com/kubernetes-release/network-plugins/cni-07a8a28637e97b22eb8dfe710eeae1344f69d16e.tar.gz
+      dest: /opt/cni/
+      remote_src: yes
+      owner: root
+      group: root
+      mode: 0755
+    become: yes
+
+  - name: Download k8s worker release binaries
+    get_url:
+      url: https://storage.googleapis.com/kubernetes-release/release/v1.4.0/bin/linux/amd64/{{ item }}
+      dest: /usr/bin/
+      mode: 0755
+    with_items:
+      - kubectl
+      - kube-proxy
+      - kubelet
+    become: yes
+
+  - name: Ensure kubelet lib dir is created
+    file:
+      path: /var/lib/kubelet/
+      recurse: yes
+      state: directory
+      owner: root
+      group: root
+    become: yes
+
+  - name: Copy kubeconfig config file
+    template:
+      src: kubeconfig.j2
+      dest: /var/lib/kubelet/kubeconfig
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Copy kubelet systemd unit template
+    template:
+      src: kubelet.service.j2
+      dest: /etc/systemd/system/kubelet.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable kubelet systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: kubelet
+    become: yes
+
+  - name: Copy kube-proxy systemd unit template
+    template:
+      src: kube-proxy.service.j2
+      dest: /etc/systemd/system/kube-proxy.service
+      owner: root
+      group: root
+      mode: 0644
+    become: yes
+
+  - name: Enable kube-proxy systemd unit
+    systemd:
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+      name: kube-proxy
+    become: yes
