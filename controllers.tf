@@ -4,6 +4,8 @@ resource "google_compute_instance" "controller" {
   machine_type = "${var.machine_type}"
   zone = "${var.zone}"
 
+  tags = ["controller", "etcd"]
+
   disk {
     image = "${var.disk_image}"
     size = "${var.disk_size}"

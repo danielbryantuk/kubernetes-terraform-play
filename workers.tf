@@ -4,6 +4,8 @@ resource "google_compute_instance" "worker" {
   machine_type = "${var.machine_type}"
   zone = "${var.zone}"
 
+  tags = ["worker"]
+
   disk {
     image = "${var.disk_image}"
     size = "${var.disk_size}"
