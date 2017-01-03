@@ -116,3 +116,27 @@ resource "google_compute_forwarding_rule" "kubernetes-rule" {
   port_range = "6443-6443"
   ip_address = "${google_compute_address.kubernetes.address}"
 }
+
+resource "google_compute_route" "k8s-route-1" {
+  name = "k8s-route-1"
+  network = "${google_compute_network.kubernetes.name}"
+  dest_range = "10.240.0.0/24"
+  next_hop_ip = "10.240.0.20"
+  priority = 1000
+}
+
+resource "google_compute_route" "k8s-route-2" {
+  name = "k8s-route-2"
+  network = "${google_compute_network.kubernetes.name}"
+  dest_range = "10.240.1.0/24"
+  next_hop_ip = "10.240.0.21"
+  priority = 1000
+}
+
+resource "google_compute_route" "k8s-route-3" {
+  name = "k8s-route-3"
+  network = "${google_compute_network.kubernetes.name}"
+  dest_range = "10.240.2.0/24"
+  next_hop_ip = "10.240.0.22"
+  priority = 1000
+}
