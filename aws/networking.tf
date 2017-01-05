@@ -74,9 +74,9 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-i
 */
 
   ingress {
-    protocol = "all"
+    protocol = "-1"
     from_port = "0"
-    to_port = "65535"
+    to_port = "0"
     cidr_blocks = ["10.240.0.0/16"]
   }
 
@@ -95,9 +95,9 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-i
   }
 
   ingress {
-    protocol = "all"
+    protocol = "-1"
     from_port = "0"
-    to_port = "65535"
+    to_port = "0"
     self = true
   }
 
