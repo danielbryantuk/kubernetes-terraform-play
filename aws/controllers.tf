@@ -1,3 +1,16 @@
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  filter {
+    name = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+  }
+  filter {
+    name = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"] # Canonical
+}
+
 variable "controller_ips" {
   default = {
     "0" = "10.240.0.10"
@@ -8,7 +21,7 @@ variable "controller_ips" {
 
 resource "aws_instance" "controller" {
   count = "3"
-  ami = "ami-746aba14"
+  ami = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.small"
 
   iam_instance_profile = "${aws_iam_instance_profile.kubernetes.id}"
