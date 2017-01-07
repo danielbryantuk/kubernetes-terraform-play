@@ -1,0 +1,11 @@
+[kube-controllers]
+
+controller0 ansible_ssh_host=130.211.156.124
+controller1 ansible_ssh_host=104.197.175.206
+controller2 ansible_ssh_host=104.154.102.92
+
+[kube-workers]
+
+worker0 ansible_ssh_host=130.211.206.65
+worker1 ansible_ssh_host=146.148.32.10
+worker2 ansible_ssh_host=104.197.181.132
