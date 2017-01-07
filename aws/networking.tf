@@ -73,6 +73,13 @@ aws ec2 authorize-security-group-ingress \
 https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-infrastructure-aws.md
 */
 
+  egress {
+    protocol = "-1"
+    from_port = "0"
+    to_port = "0"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   ingress {
     protocol = "-1"
     from_port = "0"
