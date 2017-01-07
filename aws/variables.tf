@@ -7,5 +7,11 @@ variable "aws_secret_key" {
 variable "region" {
 }
 
-variable "k8s_ssh_key" {
+variable "instance_ssh_username" {
+}
+
+variable "instance_private_key_file" {
+}
+
+variable "instance_public_key_contents" {
 }

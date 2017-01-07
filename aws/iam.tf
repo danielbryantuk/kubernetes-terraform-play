@@ -33,5 +33,5 @@ resource "aws_iam_instance_profile" "kubernetes" {
 
 resource "aws_key_pair" "kubernetes" {
   key_name = "kubernetes"
-  public_key = "${var.k8s_ssh_key}"
+  public_key = "${var.instance_public_key_contents}"
 }
