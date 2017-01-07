@@ -1,4 +1,4 @@
-cert-authority/*
+**/cert-authority/*
 ansible/inventory/*
 
 account.json
