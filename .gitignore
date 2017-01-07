@@ -1,5 +1,4 @@
 **/cert-authority/*
-ansible/inventory/*
 
 account.json
 terraform.tfvars
@@ -8,3 +7,5 @@ terraform.tfvars
 
 *.out
 *.retry
+
+gcp/inventory/*
