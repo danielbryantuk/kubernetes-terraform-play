@@ -1,0 +1,10 @@
+[tag_Ansible_host_group_controller]
+
+[tag_Ansible_host_group_worker]
+
+
+[kube-controllers:children]
+tag_Ansible_host_group_controller
+
+[kube-workers:children]
+tag_Ansible_host_group_worker

@@ -23,5 +23,6 @@ resource "aws_instance" "worker" {
 
   tags {
     Name = "worker${count.index}"
+    Ansible_host_group = "worker"
   }
 }

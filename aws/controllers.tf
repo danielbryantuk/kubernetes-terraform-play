@@ -36,5 +36,6 @@ resource "aws_instance" "controller" {
 
   tags {
     Name = "controller${count.index}"
+    Ansible_host_group = "controller"
   }
 }
