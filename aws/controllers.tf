@@ -38,4 +38,15 @@ resource "aws_instance" "controller" {
     Name = "controller${count.index}"
     Ansible_host_group = "controller"
   }
+
+  provisioner "remote-exec" {
+       inline = [
+       "echo 'Use remote-exec to ensure that instance is ready and accepting ssh connections'"
+       ]
+       connection {
+        type = "ssh"
+        user = "${var.instance_ssh_username}"
+        private_key = "${file(var.instance_private_key_file)}"
+      }
+   }
 }

@@ -25,4 +25,15 @@ resource "aws_instance" "worker" {
     Name = "worker${count.index}"
     Ansible_host_group = "worker"
   }
+
+  provisioner "remote-exec" {
+       inline = [
+       "echo 'Use remote-exec to ensure that instance is ready and accepting ssh connections'"
+       ]
+       connection {
+        type = "ssh"
+        user = "${var.instance_ssh_username}"
+        private_key = "${file(var.instance_private_key_file)}"
+      }
+   }
 }
