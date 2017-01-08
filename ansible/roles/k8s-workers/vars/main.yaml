@@ -1,0 +1,8 @@
+---
+  k8s_version: "1.4.0"
+  k8s_download_path: "https://storage.googleapis.com/kubernetes-release/release/v{{ k8s_version }}/bin/linux/amd64/"
+
+  docker_version: "1.12.1"
+  docker_download_path: "https://get.docker.com/builds/Linux/x86_64/docker-{{ docker_version }}.tgz"
+
+  cni_download_path: "https://storage.googleapis.com/kubernetes-release/network-plugins/cni-07a8a28637e97b22eb8dfe710eeae1344f69d16e.tar.gz"

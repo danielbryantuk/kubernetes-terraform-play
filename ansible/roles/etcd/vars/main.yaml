@@ -1,0 +1,2 @@
+---
+  etcd_download_path: "https://github.com/coreos/etcd/releases/download/v3.0.10/etcd-v3.0.10-linux-amd64.tar.gz"

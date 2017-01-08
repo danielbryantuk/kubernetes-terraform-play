@@ -24,7 +24,7 @@
 
   - name: Download k8s release binaries
     get_url:
-      url: https://storage.googleapis.com/kubernetes-release/release/v1.4.0/bin/linux/amd64/{{ item }}
+      url: "{{ k8s_download_path}}{{ item }}"
       dest: /usr/bin/
       mode: 0755
     with_items:

@@ -24,7 +24,7 @@
 
   - name: Download and unzip Docker
     unarchive:
-      src: https://get.docker.com/builds/Linux/x86_64/docker-1.12.1.tgz
+      src: "{{ docker_download_path}}"
       dest: /tmp/
       remote_src: yes
 
@@ -74,7 +74,7 @@
 
   - name: Download and unzip CNI (Container Network Interface)
     unarchive:
-      src: https://storage.googleapis.com/kubernetes-release/network-plugins/cni-07a8a28637e97b22eb8dfe710eeae1344f69d16e.tar.gz
+      src: "{{ cni_download_path }}"
       dest: /opt/cni/
       remote_src: yes
       owner: root
@@ -84,7 +84,7 @@
 
   - name: Download k8s worker release binaries
     get_url:
-      url: https://storage.googleapis.com/kubernetes-release/release/v1.4.0/bin/linux/amd64/{{ item }}
+      url: "{{ k8s_download_path}}{{ item }}"
       dest: /usr/bin/
       mode: 0755
     with_items:

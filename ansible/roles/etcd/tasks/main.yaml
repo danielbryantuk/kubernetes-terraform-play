@@ -24,7 +24,7 @@
 
   - name: Download and unzip etcd binaries
     unarchive:
-      src: https://github.com/coreos/etcd/releases/download/v3.0.10/etcd-v3.0.10-linux-amd64.tar.gz
+      src: "{{ etcd_download_path }}"
       dest: /tmp
       remote_src: yes
 
