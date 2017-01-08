@@ -1,12 +1,12 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "k8s_base_image" {
   most_recent = true
   filter {
     name = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    values = ["${var.instance_image}"]
   }
   filter {
     name = "virtualization-type"
     values = ["hvm"]
   }
-  owners = ["099720109477"] # Canonical
+  owners = ["${var.instance_image_provider_id}"]
 }

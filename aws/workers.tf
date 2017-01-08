@@ -1,15 +1,7 @@
-variable "worker_ips" {
-  default = {
-    "0" = "10.240.0.20"
-    "1" = "10.240.0.21"
-    "2" = "10.240.0.22"
-    }
-}
-
 resource "aws_instance" "worker" {
-  count = "3"
-  ami = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.small"
+  count = "${length(var.worker_ips)}"
+  ami = "${data.aws_ami.k8s_base_image.id}"
+  instance_type = "${var.instance_type}"
 
   iam_instance_profile = "${aws_iam_instance_profile.kubernetes.id}"
   key_name = "${aws_key_pair.kubernetes.key_name}"

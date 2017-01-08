@@ -1,5 +1,5 @@
 resource "aws_vpc" "kubernetes" {
-  cidr_block = "10.240.0.0/16"
+  cidr_block = "${var.k8s_vpc_cidr}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -9,8 +9,8 @@ resource "aws_vpc" "kubernetes" {
 }
 
 resource "aws_vpc_dhcp_options" "kubernetes" {
-  domain_name = "eu-west-1.compute.internal"
-  domain_name_servers = ["AmazonProvidedDNS"]
+  domain_name = "${var.dhcp_domain_name}"
+  domain_name_servers = "${var.dhcp_domain_name_servers}"
 
   tags {
     Name = "kubernetes"
@@ -24,7 +24,7 @@ resource "aws_vpc_dhcp_options_association" "kubernetes" {
 
 resource "aws_subnet" "kubernetes" {
   vpc_id = "${aws_vpc.kubernetes.id}"
-  cidr_block = "10.240.0.0/24"
+  cidr_block = "${var.k8s_vpc_subnet}"
 
   tags {
     Name = "kubernetes"
@@ -84,7 +84,7 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-i
     protocol = "-1"
     from_port = "0"
     to_port = "0"
-    cidr_blocks = ["10.240.0.0/16"]
+    cidr_blocks = ["${var.k8s_vpc_cidr}"]
   }
 
   ingress {
