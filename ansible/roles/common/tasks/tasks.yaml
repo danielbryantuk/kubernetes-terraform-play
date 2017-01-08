@@ -1,6 +1,0 @@
----
-  
-  tasks:
-    - name: Install Python (for Ansible)
-      raw: "apt-get -y -q install python"
-      become: yes

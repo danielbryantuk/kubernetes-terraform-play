@@ -1,7 +1,6 @@
 ---
   - hosts: kube-controllers
     gather_facts: yes
-    roles:
-      - common
+    roles:      
       - etcd
       - k8s-control-plane

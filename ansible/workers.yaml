@@ -1,6 +1,5 @@
 ---
     - hosts: kube-workers
       gather_facts: yes
-      roles:
-        - common
+      roles:        
         - k8s-workers
