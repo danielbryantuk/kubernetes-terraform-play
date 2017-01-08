@@ -1,18 +1,4 @@
 ---
 
   - hosts: all
-    gather_facts: false
-
-    tasks:
-      - name: Install Python (for Ansible)
-        raw: "apt-get -y -q install python"
-        become: yes
-
-  - hosts: kube-controllers
-    roles:
-      - etcd
-      - k8s-control-plane
-
-  - hosts: kube-workers
-    roles:
-      - k8s-workers
+    gather_facts:

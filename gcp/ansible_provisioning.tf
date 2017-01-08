@@ -17,6 +17,6 @@ resource "null_resource" "ansible-provision" {
   }
 
   provisioner "local-exec" {
-    command = "ansible-playbook -i inventory/hosts -u ${var.instance_ssh_username} --private-key ${var.instance_private_key} ../ansible/bootstrap.yaml"
+    command = "ansible-playbook -i inventory/hosts -u ${var.instance_ssh_username} --private-key ${var.instance_private_key} ../ansible/site.yaml"
   }
 }
