@@ -9,3 +9,4 @@ terraform.tfvars
 *.retry
 
 gcp/inventory/*
+gcp-modules/inventory/*
