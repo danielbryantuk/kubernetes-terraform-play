@@ -5,7 +5,7 @@ resource "google_compute_network" "kubernetes" {
 
 resource "google_compute_subnetwork" "kubernetes" {
   name = "${var.network_name}"
-  ip_cidr_range = "10.240.0.0/24"
+  ip_cidr_range = "${var.k8s_subnet_ip_cidr_range}"
   network = "${google_compute_network.kubernetes.self_link}"
 }
 
@@ -38,7 +38,7 @@ resource "google_compute_firewall" "kubernetes-allow-internal" {
     ports = ["0-65535"]
   }
 
-  source_ranges = ["10.240.0.0/24"]
+  source_ranges = ["${var.k8s_subnet_ip_cidr_range}"]
 }
 
 resource "google_compute_firewall" "kubernetes-allow-rdp" {

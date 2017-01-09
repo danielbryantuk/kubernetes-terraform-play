@@ -18,10 +18,6 @@ variable "zone" {
   default = "us-central1-a"
 }
 
-variable "network_name" {
-    default = "kubernetes"
-}
-
 variable "controller_ips" {
   default = {
     "0" = "10.240.0.10"

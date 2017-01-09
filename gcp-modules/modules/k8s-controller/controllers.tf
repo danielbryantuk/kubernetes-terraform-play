@@ -12,7 +12,7 @@ resource "google_compute_instance" "controller" {
   }
 
   network_interface {
-    subnetwork = "${google_compute_subnetwork.kubernetes.name}"
+    subnetwork = "${var.k8s_subnet_name}"
     address = "${lookup(var.controller_ips, count.index)}"
     access_config {
     }
