@@ -2,6 +2,7 @@
 
 account.json
 terraform.tfvars
+**/.terraform
 
 *.tfstate*
 
