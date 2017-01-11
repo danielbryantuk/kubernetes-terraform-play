@@ -1,10 +1,10 @@
-resource "google_compute_instance" "worker" {
-  count = "${length(var.worker_ips)}"
-  name = "worker${count.index}"
+resource "google_compute_instance" "controller" {
+  count = "${length(var.controller_ips)}"
+  name = "controller${count.index}"
   machine_type = "${var.machine_type}"
   zone = "${var.zone}"
 
-  tags = ["worker"]
+  tags = ["controller", "etcd"]
 
   disk {
     image = "${var.disk_image}"
@@ -13,7 +13,7 @@ resource "google_compute_instance" "worker" {
 
   network_interface {
     subnetwork = "${var.k8s_subnet_name}"
-    address = "${lookup(var.worker_ips, count.index)}"
+    address = "${lookup(var.controller_ips, count.index)}"
     access_config {
     }
   }
@@ -30,4 +30,8 @@ resource "google_compute_instance" "worker" {
         private_key = "${file(var.instance_private_key)}"
       }
    }
+}
+
+output "k8s-controller-links" {
+  value = "${list(google_compute_instance.controller.*.self_link)}"
 }

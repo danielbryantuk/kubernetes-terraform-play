@@ -1,19 +1,19 @@
-resource "google_compute_instance" "controller" {
-  count = "${length(var.controller_ips)}"
-  name = "controller${count.index}"
-  machine_type = "${var.machine_type}"
-  zone = "${var.zone}"
+resource "google_compute_instance" "worker" {
+  count = "${length(var.worker_ips)}"
+  name = "worker${count.index}"
+  machine_type = "${var.worker_machine_type}"
+  zone = "${var.worker_zone}"
 
-  tags = ["controller", "etcd"]
+  tags = ["worker"]
 
   disk {
-    image = "${var.disk_image}"
-    size = "${var.disk_size}"
+    image = "${var.worker_disk_image}"
+    size = "${var.worker_disk_size}"
   }
 
   network_interface {
     subnetwork = "${var.k8s_subnet_name}"
-    address = "${lookup(var.controller_ips, count.index)}"
+    address = "${lookup(var.worker_ips, count.index)}"
     access_config {
     }
   }

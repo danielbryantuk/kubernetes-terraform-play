@@ -1,3 +1,3 @@
 output "kubernete_cluster_ip" {
-  value = "${google_compute_address.kubernetes.address}"
+  value = "${module.staging.google_compute_address.kubernetes.address}"
 }

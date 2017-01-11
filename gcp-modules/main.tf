@@ -4,17 +4,18 @@ provider "google" {
   region      = "${var.region}"
 }
 
-module "k8s-controller" {
-  source = "./modules/k8s-controller"
-  name = "k8s-controller"
+module "k8scontroller" {
+  source = "modules/k8scontroller"
+  name = "k8scontroller"
 }
 
-module "k8s-worker" {
-  source = "./modules/k8s-worker"
-  name = "k8s-worker"
+module "k8sworker" {
+  source = "modules/k8sworker"
+  name = "k8sworker"
 }
 
-module "staging" {
+module "staging" { #todo - blog passing variables
   source = "./modules/staging"
   name = "staging"
+  k8s-controller-links = "${module.k8scontroller.k8s-controller-links}"
 }
