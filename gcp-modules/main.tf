@@ -4,18 +4,18 @@ provider "google" {
   region      = "${var.region}"
 }
 
-module "k8scontroller" {
+module "kubecontroller" {
   source = "modules/k8scontroller"
-  name = "k8scontroller"
+  name = "kubecontroller"
 }
 
-module "k8sworker" {
+module "kubeworker" {
   source = "modules/k8sworker"
-  name = "k8sworker"
+  name = "kubeworker"
 }
 
 module "staging" { #todo - blog passing variables
   source = "./modules/staging"
   name = "staging"
-  k8s-controller-links = "${module.k8scontroller.k8s-controller-links}"
+  k8s-controller-links = "${module.kubecontroller.k8s-controller-links}"
 }

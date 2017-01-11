@@ -31,7 +31,3 @@ resource "google_compute_instance" "controller" {
       }
    }
 }
-
-output "k8s-controller-links" {
-  value = "${list(google_compute_instance.controller.*.self_link)}"
-}

@@ -1,4 +1,7 @@
+variable "name" {}
+
 variable "k8s_subnet_name" {
+  default = "kubernetes"
 }
 
 variable "worker_machine_type" {
