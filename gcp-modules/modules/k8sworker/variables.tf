@@ -27,3 +27,9 @@ variable "worker_ips" {
     "2" = "10.240.0.22"
     }
 }
+
+variable "instance_ssh_username" {
+}
+
+variable "instance_private_key" {
+}

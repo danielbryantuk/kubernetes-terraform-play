@@ -27,3 +27,9 @@ variable "controller_ips" {
     "2" = "10.240.0.12"
     }
 }
+
+variable "instance_ssh_username" {
+}
+
+variable "instance_private_key" {
+}

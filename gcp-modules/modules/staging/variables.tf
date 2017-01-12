@@ -1,6 +1,6 @@
 variable "name" {}
 
-variable "k8s-controller-links" {}
+/*variable "k8s-controller-links" {}*/
 
 variable "network_name" {
   default = "kubernetes"
