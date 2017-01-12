@@ -103,7 +103,7 @@ resource "google_compute_http_health_check" "kubernetes-health" {
 resource "google_compute_target_pool" "kubernetes-pool" {
   name = "kubernetes-pool"
 
-  /*instances = ["${k8s-controller-links}"]*/
+  instances = ["${var.k8s-controller-links}"]
 
   health_checks = [
     "${google_compute_http_health_check.kubernetes-health.name}"

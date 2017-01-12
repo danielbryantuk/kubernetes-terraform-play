@@ -21,4 +21,5 @@ module "kubeworker" {
 module "staging" { #todo - blog passing variables
   source = "./modules/staging"
   name = "staging"
+  k8s-controller-links = "${module.kubecontroller.k8s-controller-links}"
 }
