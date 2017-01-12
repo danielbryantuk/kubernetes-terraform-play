@@ -1,13 +1,13 @@
 data "template_file" "certificates" {
-  template = "${file("../terraform-templates/kubernetes-csr.json.tpl")}"
-  vars {
-    controller0_ip = "${google_compute_instance.controller.0.network_interface.0.address}"
-    controller1_ip = "${google_compute_instance.controller.1.network_interface.0.address}"
-    controller2_ip = "${google_compute_instance.controller.2.network_interface.0.address}"
-    worker0_ip = "${google_compute_instance.worker.0.network_interface.0.address}"
-    worker1_ip = "${google_compute_instance.worker.1.network_interface.0.address}"
-    worker2_ip = "${google_compute_instance.worker.2.network_interface.0.address}"
-    kubernetes_public_address = "${google_compute_address.kubernetes.address}"
+  template = "${file("../terraform-templates/kubernetes-csr.json.tpl")}" #todo fix paths in this file
+  vars { # todo make this dynamic
+    controller0_ip = "${element(module.kubecontroller.k8s-controllers-network,0)}"
+    controller1_ip = "${element(module.kubecontroller.k8s-controllers-network,1)}"
+    controller2_ip = "${element(module.kubecontroller.k8s-controllers-network,2)}"
+    worker0_ip = "${element(module.kubeworker.k8s-workers-network,0)}"
+    worker1_ip = "${element(module.kubeworker.k8s-workers-network,1)}"
+    worker2_ip = "${element(module.kubeworker.k8s-workers-network,2)}"
+    kubernetes_public_address = "${module.staging.k8s-network-address}"
   }
 }
 

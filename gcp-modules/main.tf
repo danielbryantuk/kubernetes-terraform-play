@@ -4,17 +4,22 @@ provider "google" {
   region      = "${var.region}"
 }
 
-module "k8s-controller" {
-  source = "./modules/k8s-controller"
-  name = "k8s-controller"
+module "kubecontroller" {
+  source = "modules/k8scontroller"
+  name = "kubecontroller"
+  instance_ssh_username = "${var.instance_ssh_username}"
+  instance_private_key = "${var.instance_private_key}"
 }
 
-module "k8s-worker" {
-  source = "./modules/k8s-worker"
-  name = "k8s-worker"
+module "kubeworker" {
+  source = "modules/k8sworker"
+  name = "kubeworker"
+  instance_ssh_username = "${var.instance_ssh_username}"
+  instance_private_key = "${var.instance_private_key}"
 }
 
-module "staging" {
+module "staging" { #todo - blog passing variables
   source = "./modules/staging"
   name = "staging"
+  k8s-controller-links = "${module.kubecontroller.k8s-controller-links}"
 }

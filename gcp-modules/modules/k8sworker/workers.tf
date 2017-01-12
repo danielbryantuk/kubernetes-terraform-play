@@ -1,14 +1,14 @@
 resource "google_compute_instance" "worker" {
   count = "${length(var.worker_ips)}"
   name = "worker${count.index}"
-  machine_type = "${var.machine_type}"
-  zone = "${var.zone}"
+  machine_type = "${var.worker_machine_type}"
+  zone = "${var.worker_zone}"
 
   tags = ["worker"]
 
   disk {
-    image = "${var.disk_image}"
-    size = "${var.disk_size}"
+    image = "${var.worker_disk_image}"
+    size = "${var.worker_disk_size}"
   }
 
   network_interface {

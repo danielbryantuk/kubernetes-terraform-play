@@ -14,7 +14,7 @@ variable "region" {
   default = "us-central1"
 }
 
-variable "zone" {
+/*variable "zone" {
   default = "us-central1-a"
 }
 
@@ -44,4 +44,4 @@ variable "disk_image" {
 
 variable "disk_size" {
   default = "200"
-}
+}*/
